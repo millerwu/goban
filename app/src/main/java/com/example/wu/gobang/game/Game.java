@@ -2,6 +2,8 @@ package com.example.wu.gobang.game;
 
 import android.util.Log;
 
+import com.inaka.galgo.Galgo;
+
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -93,6 +95,11 @@ public class Game {
 
     public boolean gameEnd()
     {
+        int huo4 = GameJudgeLogic.getLive4(mGameMap, mActions.getLast());
+        if (huo4 > 0)
+        {
+            Galgo.log("********* live four =  " + huo4 + " **********");
+        }
         return GameJudgeLogic.isGameEnd(mGameMap, mActions.getLast());
     }
 
