@@ -18,6 +18,8 @@ public class Game {
     public static final int SCALE_MEDIUM = 15;
     public static final int SCALE_LARGE = 19;
 
+    public static int SIZE = SCALE_MEDIUM;
+
     int mWidth = 0;
     int mHeight = 0;
 
@@ -32,7 +34,7 @@ public class Game {
 
     public Game()
     {
-        this(SCALE_MEDIUM, SCALE_MEDIUM);
+        this(SIZE, SIZE);
     }
 
     public Game(int width, int height)
@@ -95,10 +97,35 @@ public class Game {
 
     public boolean gameEnd()
     {
-        int huo4 = GameJudgeLogic.getLive4(mGameMap, mActions.getLast());
-        if (huo4 > 0)
+        int live4 = GameJudgeLogic.getLive4(mGameMap, mActions.getLast());
+        if (live4 > 0)
         {
-            Galgo.log("********* live four =  " + huo4 + " **********");
+            Galgo.log("********* live four =  " + live4 + " **********");
+        }
+        int deid4 = GameJudgeLogic.getDied4(mGameMap, mActions.getLast());
+        if (deid4 > 0)
+        {
+            Galgo.log("********* died four =  " + deid4 + " **********");
+        }
+        int live3 = GameJudgeLogic.getLive3(mGameMap, mActions.getLast());
+        if (live3 > 0)
+        {
+            Galgo.log("********* live three =  " + live3 + " **********");
+        }
+        int died3 = GameJudgeLogic.getDied3(mGameMap, mActions.getLast());
+        if (died3 > 0)
+        {
+            Galgo.log("********* died three =  " + died3 + " **********");
+        }
+        int live2 = GameJudgeLogic.getLive2(mGameMap, mActions.getLast());
+        if (live2 > 0)
+        {
+            Galgo.log("********* live two =  " + live2 + " **********");
+        }
+        int died2 = GameJudgeLogic.getDied2(mGameMap, mActions.getLast());
+        if (died2 > 0)
+        {
+            Galgo.log("********* died two =  " + died2 + " **********");
         }
         return GameJudgeLogic.isGameEnd(mGameMap, mActions.getLast());
     }
