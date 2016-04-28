@@ -297,4 +297,28 @@ public class GameJudgeLogic {
         return count;
     }
 
+    static public int getScore(int map[][], Coordinate last)
+    {
+        int score = 0;
+        boolean fivedone =isGameEnd(map, last);
+        if (fivedone)
+        {
+            score = 1000000;
+            return score;
+        }
+        int live4 = getLive4(map, last);
+        score += live4*100000;
+        int died4 = getDied4(map, last);
+        score += died4*50000;
+        int live3 = getLive3(map, last);
+        score += live3*40000;
+        int died3 = getDied3(map, last);
+        score += died3*20000;
+        int live2 = getLive2(map, last);
+        score += live2*10000;
+        int died2 = getDied2(map, last);
+        score += died2*5000;
+        return score;
+    }
+
 }
