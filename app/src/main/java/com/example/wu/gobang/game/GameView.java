@@ -263,7 +263,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
                     if (mGame.gameEnd()){
                         Galgo.log("*********gameEnd **********");
                     }
-
                 }
                 refreshGame();
                 break;

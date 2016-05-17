@@ -2,6 +2,9 @@ package com.example.wu.gobang.game;
 
 import android.util.Log;
 
+import com.example.wu.gobang.player.CompterPlayer;
+import com.example.wu.gobang.player.Player;
+import com.example.wu.gobang.player.localPlayer;
 import com.inaka.galgo.Galgo;
 
 import java.util.Deque;
@@ -17,14 +20,20 @@ public class Game {
     public static final int SCALE_SMALL = 11;
     public static final int SCALE_MEDIUM = 15;
     public static final int SCALE_LARGE = 19;
+    public static final int SINGLE_MODE = 1;
+    public static final int VS_MODE = 2;
 
     public static int SIZE = SCALE_MEDIUM;
 
     int mWidth = 0;
     int mHeight = 0;
 
+    int mMode = SINGLE_MODE;
+
     int mActive = 1;
 
+    Player player1 = null;
+    Player player2 = null;
     public static final int BLACK = 1;
     public static final int WHITE = 2;
     public static final int SPACE = 0;
@@ -34,15 +43,23 @@ public class Game {
 
     public Game()
     {
-        this(SIZE, SIZE);
+        this(SIZE, SIZE, SINGLE_MODE);
     }
 
-    public Game(int width, int height)
+    public Game(int width, int height, int mode)
     {
         mWidth = width;
         mHeight = height;
+        mMode = mode;
         mGameMap = new int[mWidth][mHeight];
         mActions = new LinkedList<Coordinate>();
+        player1 = new localPlayer();
+        if (mMode == SINGLE_MODE)
+        {
+            player2 = new CompterPlayer();
+        } else {
+            player2 = new localPlayer();
+        }
     }
 
     public int getWidth()
