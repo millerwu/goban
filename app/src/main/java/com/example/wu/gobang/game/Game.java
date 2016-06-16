@@ -1,10 +1,10 @@
 package com.example.wu.gobang.game;
 
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
-import com.example.wu.gobang.player.CompterPlayer;
 import com.example.wu.gobang.player.Player;
-import com.example.wu.gobang.player.localPlayer;
 import com.inaka.galgo.Galgo;
 
 import java.util.Deque;
@@ -23,6 +23,9 @@ public class Game {
     public static final int SINGLE_MODE = 1;
     public static final int VS_MODE = 2;
 
+    public static final int MESSAGE_ADD_CHESS = 1;
+
+
     public static int SIZE = SCALE_MEDIUM;
 
     int mWidth = 0;
@@ -32,8 +35,10 @@ public class Game {
 
     int mActive = 1;
 
-    Player player1 = null;
-    Player player2 = null;
+    Handler mRefreshHandler;
+
+    Player mMe;
+    Player mChallenger;
     public static final int BLACK = 1;
     public static final int WHITE = 2;
     public static final int SPACE = 0;
@@ -41,25 +46,21 @@ public class Game {
 
     int mGameMap[][];
 
-    public Game()
+    public Game(Handler h, Player me, Player challenger)
     {
-        this(SIZE, SIZE, SINGLE_MODE);
+        this(h, me, challenger, SIZE, SIZE, SINGLE_MODE);
     }
 
-    public Game(int width, int height, int mode)
+    public Game(Handler h, Player me, Player challenger, int width, int height, int mode)
     {
+        mRefreshHandler = h;
+        mMe = me;
+        mChallenger = challenger;
         mWidth = width;
         mHeight = height;
         mMode = mode;
         mGameMap = new int[mWidth][mHeight];
         mActions = new LinkedList<Coordinate>();
-        player1 = new localPlayer();
-        if (mMode == SINGLE_MODE)
-        {
-            player2 = new CompterPlayer();
-        } else {
-            player2 = new localPlayer();
-        }
     }
 
     public int getWidth()
@@ -82,17 +83,19 @@ public class Game {
         {
             return false;
         }
-        if (mGameMap[coor.x][coor.y] == 0)
-        {
-            if (mActive == BLACK) {
-                mGameMap[coor.x][coor.y] = BLACK;
-            } else {
-                mGameMap[coor.x][coor.y] = WHITE;
+        if (mMode == Game.SINGLE_MODE) {
+            if (mMe.getType() == mActive && mGameMap[coor.x][coor.y] == 0) {
+                if (mActive == BLACK) {
+                    mGameMap[coor.x][coor.y] = BLACK;
+                } else {
+                    mGameMap[coor.x][coor.y] = WHITE;
+                }
+                sendAddChess(coor);
+                changeActive();
+                mActions.addLast(new Coordinate(coor));
+                Log.d(TAG, "Action add x = " + coor.x + " y = " + coor.y);
+                return true;
             }
-            changeActive();
-            mActions.addLast(new Coordinate(coor));
-            Log.d(TAG, "Action add x = " + coor.x + " y = " + coor.y);
-            return true;
         }
         return false;
     }
@@ -105,6 +108,15 @@ public class Game {
         } else {
             mActive = BLACK;
         }
+    }
+
+    private void sendAddChess(Coordinate coor)
+    {
+        Message msg = new Message();
+        msg.what = Game.MESSAGE_ADD_CHESS;
+        msg.arg1 = coor.x;
+        msg.arg2 = coor.y;
+        mRefreshHandler.sendMessage(msg);
     }
 
     public Deque<Coordinate> getActions()
@@ -146,7 +158,6 @@ public class Game {
         }
         return GameJudgeLogic.isGameEnd(mGameMap, mActions.getLast());
     }
-
 
 
 }

@@ -2,11 +2,16 @@ package com.example.wu.gobang;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.wu.gobang.game.CompterAI;
+import com.example.wu.gobang.game.Coordinate;
 import com.example.wu.gobang.game.Game;
 import com.example.wu.gobang.game.GameView;
+import com.example.wu.gobang.player.Player;
 import com.inaka.galgo.Galgo;
 import com.inaka.galgo.GalgoOptions;
 
@@ -14,6 +19,24 @@ public class SingleGameActivity extends AppCompatActivity {
 
     private GameView mGameView;
     private Game mGame;
+    private Player mLocal;
+    private Player mChanllenger;
+
+    private CompterAI mComputerAI;
+    private Handler mRefreshHandler = new Handler()
+    {
+        public void handleMessage(Message msg)
+        {
+            switch (msg.what)
+            {
+                case Game.MESSAGE_ADD_CHESS:
+                    Coordinate bestcoor = mComputerAI.getBestCoor();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +75,12 @@ public class SingleGameActivity extends AppCompatActivity {
     }
     private void initGame()
     {
-        mGame = new Game();
+        mLocal = new Player(" ", Game.BLACK);
+        mChanllenger = new Player(" ", Game.WHITE);
+        mGame = new Game(mRefreshHandler, mLocal, mChanllenger);
+        mComputerAI = new CompterAI(mGame);
     }
+
+
+
 }

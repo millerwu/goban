@@ -257,13 +257,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
                 mFocusCoord.y = (int) (y/mChessSize);
                 Galgo.log("MotionEvent.ACTION_UP  x = " + mFocusCoord.x + " y = " + mFocusCoord.y);
                 mDrawFocus = true;
-                if (mGame != null)
-                {
-                    mGame.addChess(mFocusCoord);
-                    if (mGame.gameEnd()){
-                        Galgo.log("*********gameEnd **********");
-                    }
-                }
+                addChess();
                 refreshGame();
                 break;
             case MotionEvent.ACTION_DOWN:
@@ -302,6 +296,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             }
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
+    }
+
+    private void addChess()
+    {
+        if (mGame != null)
+        {
+            mGame.addChess(mFocusCoord);
+            if (mGame.gameEnd()){
+                Galgo.log("*********gameEnd **********");
+            }
         }
     }
 }
