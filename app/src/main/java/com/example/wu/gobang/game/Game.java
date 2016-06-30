@@ -84,13 +84,24 @@ public class Game {
             return false;
         }
         if (mMode == Game.SINGLE_MODE) {
-            if (mMe.getType() == mActive && mGameMap[coor.x][coor.y] == 0) {
+            if (mMe.getType() == mActive && mGameMap[coor.x][coor.y] == SPACE) {
                 if (mActive == BLACK) {
                     mGameMap[coor.x][coor.y] = BLACK;
                 } else {
                     mGameMap[coor.x][coor.y] = WHITE;
                 }
                 sendAddChess(coor);
+                changeActive();
+                mActions.addLast(new Coordinate(coor));
+                Log.d(TAG, "Action add x = " + coor.x + " y = " + coor.y);
+                return true;
+            } else if (mChallenger.getType() == mActive && mGameMap[coor.x][coor.y] == SPACE)
+            {
+                if (mActive == BLACK) {
+                    mGameMap[coor.x][coor.y] = BLACK;
+                } else {
+                    mGameMap[coor.x][coor.y] = WHITE;
+                }
                 changeActive();
                 mActions.addLast(new Coordinate(coor));
                 Log.d(TAG, "Action add x = " + coor.x + " y = " + coor.y);

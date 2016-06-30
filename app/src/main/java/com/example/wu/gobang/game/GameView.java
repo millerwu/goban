@@ -195,7 +195,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         }
     }
 
-    private void refreshGame()
+    public void refreshGame()
     {
         Canvas canvas = mSurfaceHolder.lockCanvas();
 

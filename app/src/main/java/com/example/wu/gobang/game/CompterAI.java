@@ -1,9 +1,12 @@
 package com.example.wu.gobang.game;
 
+import android.util.Log;
+
 /**
  * Created by intel on 2016/4/22.
  */
 public class CompterAI {
+    public static final String TAG = "CompterAI";
 
     Game mGame;
 
@@ -23,6 +26,7 @@ public class CompterAI {
             {
                 if (bestSorce < GameJudgeLogic.getScore(mGame.getGameMap(), new Coordinate(x, y)))
                 {
+                    Log.d(TAG, "bestSorce = " + bestSorce + " x = " + x + " y = " + y);
                     bestSorce = GameJudgeLogic.getScore(mGame.getGameMap(), new Coordinate(x, y));
                     bestCoor = new Coordinate(x, y);
                 }

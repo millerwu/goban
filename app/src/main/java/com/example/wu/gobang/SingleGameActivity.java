@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.wu.gobang.game.CompterAI;
 import com.example.wu.gobang.game.Coordinate;
@@ -17,6 +18,7 @@ import com.inaka.galgo.GalgoOptions;
 
 public class SingleGameActivity extends AppCompatActivity {
 
+    public static final String TAG = "SingleGameActivity";
     private GameView mGameView;
     private Game mGame;
     private Player mLocal;
@@ -30,7 +32,10 @@ public class SingleGameActivity extends AppCompatActivity {
             switch (msg.what)
             {
                 case Game.MESSAGE_ADD_CHESS:
+                    Log.d(TAG, "handleMessage MESSAGE_ADD_CHESS");
                     Coordinate bestcoor = mComputerAI.getBestCoor();
+                    mGame.addChess(bestcoor);
+                    mGameView.refreshGame();
                     break;
                 default:
                     break;
